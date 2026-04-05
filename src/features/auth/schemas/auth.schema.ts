@@ -35,6 +35,7 @@ export const registerSchema = yup.object({
   avatar: yup
     .mixed<File>()
     .nullable()
+    .notRequired()
     .test("fileType", "დასაშვებია მხოლოდ jpg, png ან webp", (file) => {
       if (!file) return true;
       return validImageTypes.includes(file.type);
@@ -67,6 +68,7 @@ export type AuthResponse = {
 };
 
 export type MeResponse = {
+  //   [x: string]: string;
   data: User;
 };
 

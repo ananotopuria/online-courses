@@ -4,7 +4,7 @@ import type {
   RegisterFormValues,
   AuthResponse,
   MeResponse,
-} from "./../schemas/auth.schema";
+} from "../schemas/auth.schema";
 
 export async function registerUser(data: RegisterFormValues) {
   const formData = new FormData();
@@ -38,7 +38,7 @@ export async function loginUser(data: LoginFormValues) {
 
 export async function getMe() {
   const response = await privateInstance.get<MeResponse>("/me");
-  return response.data;
+  return response.data.data;
 }
 
 export async function logoutUser() {
