@@ -1,8 +1,10 @@
 import axios from "axios";
 import { createPortal } from "react-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Eye, EyeOff, X } from "lucide-react";
+
 import {
   loginSchema,
   type ApiErrorResponse,
@@ -17,6 +19,7 @@ type LoginModalProps = {
 
 function LoginModal({ onClose, onSwitchToRegister }: LoginModalProps) {
   const loginMutation = useLogin();
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -31,9 +34,9 @@ function LoginModal({ onClose, onSwitchToRegister }: LoginModalProps) {
     },
   });
 
-  // 🔒 scroll lock (pro UX)
   useEffect(() => {
     document.body.style.overflow = "hidden";
+
     return () => {
       document.body.style.overflow = "auto";
     };
@@ -54,44 +57,71 @@ function LoginModal({ onClose, onSwitchToRegister }: LoginModalProps) {
 
   return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 px-4 py-6"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-md rounded-2xl bg-white p-6"
+        className="relative w-full max-w-115 rounded-[18px] bg-white px-8 pb-8 pt-7 shadow-xl"
         onClick={(event) => event.stopPropagation()}
       >
-        <div className="mb-5 flex items-center justify-between">
-          <h2 className="text-xl font-semibold">Log In</h2>
-          <button type="button" onClick={onClose}>
-            X
-          </button>
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute right-5 top-5 text-[#9E9E9E] transition hover:text-black"
+        >
+          <X size={24} strokeWidth={2} />
+        </button>
+
+        <div className="mb-8 text-center">
+          <h2 className="text-[28px] font-bold leading-none text-[#1D1D1F]">
+            Welcome Back
+          </h2>
+          <p className="mt-3 text-[15px] text-[#6F6F73]">
+            Log in to continue your learning
+          </p>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <div>
+            <label className="mb-2 block text-[15px] font-medium text-[#353535]">
+              Email
+            </label>
             <input
               type="email"
-              placeholder="Email"
+              placeholder="you@example.com"
               {...register("email")}
-              className="w-full rounded-lg border p-3 outline-none"
+              className="h-12.5 w-full rounded-[10px] border border-[#D6D6DB] px-4 text-[15px] outline-none transition focus:border-[#5B50FF]"
             />
             {errors.email && (
-              <p className="mt-1 text-sm text-red-500">
+              <p className="mt-1.5 text-sm text-red-500">
                 {errors.email.message}
               </p>
             )}
           </div>
 
           <div>
-            <input
-              type="password"
-              placeholder="Password"
-              {...register("password")}
-              className="w-full rounded-lg border p-3 outline-none"
-            />
+            <label className="mb-2 block text-[15px] font-medium text-[#353535]">
+              Password
+            </label>
+
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                {...register("password")}
+                className="h-12.5 w-full rounded-[10px] border border-[#D6D6DB] px-4 pr-12 text-[15px] outline-none transition focus:border-[#5B50FF]"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-[#A0A0A6]"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
+
             {errors.password && (
-              <p className="mt-1 text-sm text-red-500">
+              <p className="mt-1.5 text-sm text-red-500">
                 {errors.password.message}
               </p>
             )}
@@ -104,18 +134,24 @@ function LoginModal({ onClose, onSwitchToRegister }: LoginModalProps) {
           <button
             type="submit"
             disabled={loginMutation.isPending}
-            className="w-full rounded-lg bg-black py-3 text-white"
+            className="mt-1 h-12 w-full rounded-[10px] bg-[#4F46E5] text-[17px] font-medium text-white transition hover:bg-[#4338CA] disabled:opacity-70"
           >
             {loginMutation.isPending ? "Loading..." : "Log In"}
           </button>
         </form>
 
-        <p className="mt-4 text-sm">
+        <div className="my-6 flex items-center gap-3">
+          <div className="h-px flex-1 bg-[#E4E4E7]" />
+          <span className="text-[14px] text-[#8D8D93]">or</span>
+          <div className="h-px flex-1 bg-[#E4E4E7]" />
+        </div>
+
+        <p className="text-center text-[14px] text-[#707076]">
           Don&apos;t have an account?{" "}
           <button
             type="button"
             onClick={onSwitchToRegister}
-            className="font-medium underline"
+            className="font-medium text-[#1D1D1F] underline underline-offset-2"
           >
             Sign Up
           </button>
