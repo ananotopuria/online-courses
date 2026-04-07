@@ -13,3 +13,39 @@
   --color-muted: #64748b;
   --color-border: #e2e8f0;
 }
+
+.slick-dots {
+  position: absolute;
+  top: 20rem;
+  display: flex !important;
+  justify-content: center;
+  gap: 52px;
+  width: 10px;
+  height: 10px;
+}
+
+.slick-dots li {
+  margin: 0;
+}
+
+.slick-dots li button {
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  transition: all 0.3s ease;
+  display: block;
+  background: rgba(193, 188, 188, 0.6) !important;
+  width: 57px !important;
+  height: 8px !important;
+}
+
+.slick-dots li button:before {
+  display: none;
+}
+
+.slick-dots li.slick-active button {
+  width: 30px;
+  height: 8px;
+  border-radius: 999px;
+  background: #ffffff !important;
+}

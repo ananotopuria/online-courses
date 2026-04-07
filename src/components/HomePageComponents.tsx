@@ -1,6 +1,6 @@
-import ContinueLearning from "./Home/ContinueLearning";
-import Hero from "./Home/Hero";
-import Popular from "./Home/Popular";
+import ContinueLearning from "./ui/Home/ContinueLearning";
+import Hero from "./ui/Home/Hero";
+import Popular from "./ui/Home/Popular";
 
 function HomePageComponents() {
   return (
